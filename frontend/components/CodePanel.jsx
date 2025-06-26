@@ -87,6 +87,7 @@ export default function CodePanel({ setOutput, setIsLoading }) {
         <Editor
           height="100%"
           defaultLanguage="javascript"
+          language={selectedLanguage}
           defaultValue="// Write your code here"
           theme="vs-dark"
           onMount={onMount}
