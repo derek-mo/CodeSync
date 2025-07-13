@@ -14,7 +14,7 @@ export default function OutputPanel({ output, isLoading }) {
             </div>
           ) : (
             <pre className="whitespace-pre-wrap font-mono text-sm">
-              {output ? output : "Error executing"}
+              {output ? output : ""}
             </pre>
           )}
         </div>
