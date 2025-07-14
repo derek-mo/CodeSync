@@ -1,31 +1,18 @@
-'use client';
-
-import CodePanel from "@/components/CodePanel";
-import NavBar from "@/components/NavBar";
-import OutputPanel from "@/components/OutputPanel";
-import { useState } from 'react'
+import React from 'react'
+import Link from 'next/link'
 
 export default function Home() {
-    const [output, setOutput] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
-
   return (
-    <main className="h-screen w-screen flex flex-col">
-      <NavBar />
-      <div className="flex flex-1">
-        <div className="w-1/2 pl-2 pb-2 pr-1">
-          <CodePanel 
-            setOutput={setOutput}
-            setIsLoading={setIsLoading}
-          />
+    <div className='flex flex-col items-center justify-center w-screen h-screen' >
+        <div className="border-2 p-6 space-y-4 md:space-y-6">
+            <span>Login</span>
+            <div className='flex flex-col' >
+                <label>Username</label>
+                <input input type="email" name="email" id="email" required className="border-2" />
+                <label>Password</label>
+                <input input type="password" name="password" id="password" required className="border-2" />
+            </div>
         </div>
-        <div className="w-1/2 pr-2 pb-2 pl-1">
-          <OutputPanel 
-            output={output}
-            isLoading={isLoading}
-          />
-        </div>
-      </div>
-    </main>
-  );
+    </div>
+  )
 }
