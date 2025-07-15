@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Editor from "@monaco-editor/react";
 import LanguageSelector from "./LanguageSelector";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,11 +10,37 @@ import * as Y from "yjs";
 // import { WebrtcProvider } from "y-webrtc";
 import { WebsocketProvider } from "y-websocket";
 import { MonacoBinding } from "y-monaco";
+import { createClient } from "@/utils/supabase/client";
 
 export default function CodePanel({ setOutput, setIsLoading }) {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    async function getUser() {
+      const supabase = createClient();
+
+      const { data, error } = await supabase.auth.getUser();
+      if (error || !data?.user) {
+        console.log("no user");
+      } else {
+        setUser(data.user);
+      }
+    }
+
+    getUser();
+  }, []);
+
+  console.log({ user });
+
   const editorRef = useRef(null);
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState("// Write your code here");
   const [selectedLanguage, setSelectedLanguage] = useState(null);
+
+  useEffect(() => {
+    if (user) {
+      setValue(`// Welcome ${user.email}!\n// Write your code here`);
+    }
+  }, [user]);
 
   const onMount = async (editor, monaco) => {
     editorRef.current = editor;
@@ -22,25 +48,25 @@ export default function CodePanel({ setOutput, setIsLoading }) {
     editor.focus();
 
     // Initialize YJS
-    const ydoc = new Y.Doc(); // a collection of shared objects -> text
+    // const ydoc = new Y.Doc(); // a collection of shared objects -> text
 
-    // Connect to peers with WebRTC
-    // const provider = new WebrtcProvider("test-room", ydoc);
-    const provider = new WebsocketProvider(`${location.protocol === 'http:' ? 'ws:' : 'wss:'}//localhost:1234`, 'monaco', ydoc);
-    const type = ydoc.getText("monaco");
+    // // Connect to peers with WebRTC
+    // // const provider = new WebrtcProvider("test-room", ydoc);
+    // const provider = new WebsocketProvider(`${location.protocol === 'http:' ? 'ws:' : 'wss:'}//localhost:1234`, 'monaco', ydoc);
+    // const type = ydoc.getText("monaco");
 
-    provider.on('status', event => {
-      console.log('WebSocket status:', event.status); // "connected" or "disconnected"
-    });
+    // provider.on('status', event => {
+    //   console.log('WebSocket status:', event.status); // "connected" or "disconnected"
+    // });
 
-    // Bind YJS to Monaco
-    const binding = new MonacoBinding(
-      type,
-      editorRef.current.getModel(),
-      new Set([editorRef.current]),
-      provider.awareness
-    );
-    console.log(provider.awareness);
+    // // Bind YJS to Monaco
+    // const binding = new MonacoBinding(
+    //   type,
+    //   editorRef.current.getModel(),
+    //   new Set([editorRef.current]),
+    //   provider.awareness
+    // );
+    // console.log(provider.awareness);
   };
 
   const handleRunCode = async () => {
@@ -110,9 +136,7 @@ export default function CodePanel({ setOutput, setIsLoading }) {
       <div className="grow">
         <Editor
           height="100%"
-          defaultLanguage="javascript"
           language={selectedLanguage}
-          defaultValue="// Write your code here"
           theme="vs-dark"
           onMount={onMount}
           value={value}
