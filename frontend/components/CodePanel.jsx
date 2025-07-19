@@ -14,6 +14,9 @@ import { createClient } from "@/utils/supabase/client";
 
 export default function CodePanel({ setOutput, setIsLoading }) {
   const [user, setUser] = useState(null);
+  const editorRef = useRef(null);
+  const [value, setValue] = useState("// Write your code here");
+  const [selectedLanguage, setSelectedLanguage] = useState(null);
 
   useEffect(() => {
     async function getUser() {
@@ -31,10 +34,6 @@ export default function CodePanel({ setOutput, setIsLoading }) {
   }, []);
 
   console.log({ user });
-
-  const editorRef = useRef(null);
-  const [value, setValue] = useState("// Write your code here");
-  const [selectedLanguage, setSelectedLanguage] = useState(null);
 
   useEffect(() => {
     if (user) {
@@ -121,6 +120,7 @@ export default function CodePanel({ setOutput, setIsLoading }) {
     </button>
   );
 
+  console.log(selectedLanguage)
   return (
     <div className="h-full flex flex-col rounded-lg overflow-hidden">
       <div className="bg-stone-900 p-2 flex-shrink-0 flex justify-between items-center">

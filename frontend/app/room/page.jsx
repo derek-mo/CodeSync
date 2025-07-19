@@ -10,7 +10,7 @@ export default function Home() {
     const [isLoading, setIsLoading] = useState(false);
 
   return (
-    <main className="h-screen w-screen flex flex-col">
+    <main className="h-full w-full flex flex-col mt-2">
       <div className="flex flex-1">
         <div className="w-1/2 pl-2 pb-2 pr-1">
           <CodePanel 

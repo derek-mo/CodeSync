@@ -58,16 +58,10 @@ export default function Login() {
             >
               Login
             </button>
-            <button
-              formAction={signup}
-              className="w-full text-white bg-emerald-600 hover:bg-emerald-700 focus:ring-4 focus:outline-none focus:ring-neutral-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center cursor-pointer"
-            >
-              Sign Up
-            </button>
             <p className="text-sm font-light text-gray-500 dark:text-white">
               Don&apos;t have an account yet?{" "}
               <a
-                href="#"
+                href="/signup"
                 className="font-medium text-neutral-600 hover:underline dark:text-white"
               >
                 Sign up
