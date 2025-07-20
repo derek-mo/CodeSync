@@ -13,17 +13,15 @@ export default async function Dashboard() {
 
   let { data: rooms } = await supabase
   .from("rooms")
-  .select("*")
-  .eq("owner_id", data.user.id);
-
-  console.log(rooms);
-  console.log(rooms[0]?.room_name);
+  .select("room_id, room_name, created_at")
+  .eq("owner_id", data.user.id)
+  .order("created_at", { ascending: false });
 
   return (
-    <div>
-      <p>{data.user.id}</p>
-      <p>{data.user.email}</p>
-      <RoomCard roomName={rooms[0]?.room_name} />
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 p-8">
+      {rooms.map((room) => (
+        <RoomCard key={room.room_id} room={room} />
+      ))}
     </div>
   );
 }

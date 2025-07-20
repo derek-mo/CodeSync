@@ -5,14 +5,14 @@ import Editor from "@monaco-editor/react";
 import LanguageSelector from "./LanguageSelector";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faCopy } from "@fortawesome/free-solid-svg-icons";
-import { executeCode } from "./api";
+import { executeCode } from "../api";
 import * as Y from "yjs";
 // import { WebrtcProvider } from "y-webrtc";
 import { WebsocketProvider } from "y-websocket";
 import { MonacoBinding } from "y-monaco";
 import { createClient } from "@/utils/supabase/client";
 
-export default function CodePanel({ setOutput, setIsLoading }) {
+export default function CodePanel({ setOutput, setIsLoading, roomId }) {
   const [user, setUser] = useState(null);
   const editorRef = useRef(null);
   const [value, setValue] = useState("// Write your code here");
@@ -120,7 +120,7 @@ export default function CodePanel({ setOutput, setIsLoading }) {
     </button>
   );
 
-  console.log(selectedLanguage)
+  console.log(selectedLanguage);
   return (
     <div className="h-full flex flex-col rounded-lg overflow-hidden">
       <div className="bg-stone-900 p-2 flex-shrink-0 flex justify-between items-center">
