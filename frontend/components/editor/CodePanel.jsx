@@ -7,7 +7,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faCopy } from "@fortawesome/free-solid-svg-icons";
 import { executeCode } from "../api";
 import * as Y from "yjs";
-// import { WebrtcProvider } from "y-webrtc";
 import { WebsocketProvider } from "y-websocket";
 import { MonacoBinding } from "y-monaco";
 import { createClient } from "@/utils/supabase/client";
@@ -47,25 +46,25 @@ export default function CodePanel({ setOutput, setIsLoading, roomId }) {
     editor.focus();
 
     // Initialize YJS
-    // const ydoc = new Y.Doc(); // a collection of shared objects -> text
+    const ydoc = new Y.Doc(); // a collection of shared objects -> text
 
-    // // Connect to peers with WebRTC
-    // // const provider = new WebrtcProvider("test-room", ydoc);
-    // const provider = new WebsocketProvider(`${location.protocol === 'http:' ? 'ws:' : 'wss:'}//localhost:1234`, 'monaco', ydoc);
-    // const type = ydoc.getText("monaco");
+    // Connect to peers with WebRTC
+    // const provider = new WebrtcProvider("test-room", ydoc);
+    const provider = new WebsocketProvider(`${location.protocol === 'http:' ? 'ws:' : 'wss:'}//localhost:1234`, 'monaco', ydoc);
+    const type = ydoc.getText("monaco");
 
-    // provider.on('status', event => {
-    //   console.log('WebSocket status:', event.status); // "connected" or "disconnected"
-    // });
+    provider.on('status', event => {
+      console.log('WebSocket status:', event.status); // "connected" or "disconnected"
+    });
 
-    // // Bind YJS to Monaco
-    // const binding = new MonacoBinding(
-    //   type,
-    //   editorRef.current.getModel(),
-    //   new Set([editorRef.current]),
-    //   provider.awareness
-    // );
-    // console.log(provider.awareness);
+    // Bind YJS to Monaco
+    const binding = new MonacoBinding(
+      type,
+      editorRef.current.getModel(),
+      new Set([editorRef.current]),
+      provider.awareness
+    );
+    console.log(provider.awareness);
   };
 
   const handleRunCode = async () => {

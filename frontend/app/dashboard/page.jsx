@@ -2,7 +2,7 @@ import React from "react";
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 
-import RoomCard from "@/components/RoomCard";
+import RoomCard from "@/components/dashboard/RoomCard";
 
 export default async function Dashboard() {
   const supabase = await createClient();
